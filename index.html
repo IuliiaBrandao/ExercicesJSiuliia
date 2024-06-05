@@ -6,6 +6,20 @@
     <title>Fetch_JSON</title>
   </head>
   <body>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>NOM</th>
+                <th>PRENOM</th>
+                <th>EMAIL</th>
+             </tr>
+         </thead>
+         <tbody id="tb">
+     
+         </tbody>
+     </table>
+
     <script>
       // afficher data et title
       // fetch('https://jsonplaceholder.typicode.com/posts')
@@ -31,15 +45,42 @@
       //   }
 
       async function getData() {
-        const responce = await fetch("posts.json");
-        console.log(responce);
-        if (responce.ok) {
-          const data = await responce.json();
-          console.log(data);
-        }
-      }
-      getData()
+            try {
+                // Chercher les données depuis un fichier json local
+                const response = await fetch('posts.json')
+                // Tester si la réponse est ok
+                if (response.ok) {
+                    // On récupère les données
+                    const data = await response.json()
+                    // Parcourir le tablea des données
+                    data.map(post => {
+                        // Créer une ligne du tableau
+                        let tr = document.createElement('tr')
+                        // Créer 4 cellules (td)
+                        let id = document.createElement('td')
+                        let nom = document.createElement('td')
+                        let prenom = document.createElement('td')
+                        let email = document.createElement('td')
+                        // Assigner les valeurs convenanbles dans chaque cellule
+                        id.textContent = post.id
+                        nom.textContent = post.last_name
+                        prenom.textContent = post.first_name
+                        email.textContent = post.email
+                        // Ajouter les 4 éléments <td> à leur parent <tr>
+                        tr.appendChild(id)
+                        tr.appendChild(nom)
+                        tr.appendChild(prenom)
+                        tr.appendChild(email)
+                        // Cibler l'élement <tbody> via son ID et lui ajouter l'élement <tr>
+                        document.getElementById('tb').appendChild(tr)
+                    })
 
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        }
+        getData()
     </script>
   </body>
 </html>
